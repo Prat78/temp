@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://b-cdn.monetumo.com/cmp/synapsecorp-pages-dev.js" data-cfasync="false"></script>
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script defer src="https://b-cdn.monetumo.com/bundles/synapsecorp-pages-dev.js" data-cfasync="false"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZT0KHEJ77Y"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-ZT0KHEJ77Y');</script>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Play - Synapse Unblocked Games</title>
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script>tailwind.config={theme:{extend:{colors:{primary:"#3b82f6",secondary:"#8b5cf6",dark:"#0f172a","dark-light":"#1e293b"},fontFamily:{sans:["Inter","system-ui","sans-serif"],orbitron:["Orbitron","monospace"]}}}}</script>
+    <style>
+        /* ── Layout ── */
+        #playLayout {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            align-items: flex-start;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        /* Main iframe column */
+        #mainCol {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        /* Game iframe wrapper - 16:9 */
+        #iframeWrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(59,130,246,0.3);
+            box-shadow: 0 0 30px rgba(59,130,246,0.15);
+        }
+        #gameFrame {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+        /* Fullscreen button */
+        #fsBtn {
+            position: absolute;
+            bottom: 10px; right: 10px;
+            z-index: 10;
+            background: rgba(15,23,42,0.85);
+            border: 1px solid rgba(59,130,246,0.5);
+            color: #fff;
+            border-radius: 8px;
+            padding: 7px 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s, box-shadow 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        #fsBtn:hover { background: #3b82f6; box-shadow: 0 0 14px rgba(59,130,246,0.5); }
+
+        /* Game info bar */
+        #gameInfoBar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(30,41,59,0.85);
+            border-radius: 10px;
+            padding: 10px 16px;
+            border: 1px solid rgba(59,130,246,0.15);
+        }
+        #gameThumbSmall {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(59,130,246,0.3);
+            flex-shrink: 0;
+        }
+        #gameTitleText {
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            text-transform: capitalize;
+        }
+        #gameDesc {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 2px;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .info-actions { display: flex; gap: 8px; margin-left: auto; }
+        .info-btn {
+            display: flex; align-items: center; gap: 5px;
+            padding: 6px 14px; border-radius: 999px;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; border: none;
+            transition: all 0.18s ease;
+        }
+        .btn-fullscreen { background: #3b82f6; color: #fff; }
+        .btn-fullscreen:hover { background: #2563eb; box-shadow: 0 0 12px rgba(59,130,246,0.5); }
+
+        /* ── Right sidebar ── */
+        #sidebarCol {
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sidebar-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #64748b;
+            padding: 0 2px;
+        }
+        /* Large sidebar cards (top 2) */
+        .sidebar-card-lg {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(59,130,246,0.15);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: block;
+            text-decoration: none;
+        }
+        .sidebar-card-lg:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 16px rgba(59,130,246,0.4);
+            border-color: rgba(59,130,246,0.5);
+        }
+        .sidebar-card-lg img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.2s; }
+        .sidebar-card-lg:hover img { filter: brightness(0.75); }
+        .sidebar-card-lg .card-name {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 20px 6px 6px;
+            background: linear-gradient(to top, rgba(10,15,30,0.9) 50%, transparent);
+            font-size: 0.68rem; font-weight: 700; color: #f1f5f9;
+            text-transform: capitalize;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        /* Small sidebar grid (4-col) */
+        #sidebarSmallGrid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+        }
+        .sidebar-card-sm {
+            aspect-ratio: 1/1;
+            border-radius: 7px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(59,130,246,0.1);
+            transition: transform 0.18s, box-shadow 0.18s;
+            display: block;
+            text-decoration: none;
+            position: relative;
+        }
+        .sidebar-card-sm:hover { transform: scale(1.08); box-shadow: 0 0 10px rgba(59,130,246,0.4); border-color: rgba(59,130,246,0.4); }
+        .sidebar-card-sm img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ── Bottom row of games ── */
+        #bottomSection { padding: 0 10px; max-width: 1600px; margin: 12px auto 0; }
+        #bottomSection h2 { font-family: 'Orbitron', monospace; font-size: 1rem; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
+        #bottomGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+        }
+        .bottom-card {
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(59,130,246,0.15);
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            display: block;
+            text-decoration: none;
+        }
+        .bottom-card:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 0 16px rgba(59,130,246,0.4); border-color: rgba(59,130,246,0.5); }
+        .bottom-card img { width: 100%; height: 100%; object-fit: cover; transition: filter 0.2s; }
+        .bottom-card:hover img { filter: brightness(0.65); }
+        .bottom-card .card-name {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 18px 5px 5px;
+            background: linear-gradient(to top, rgba(10,15,30,0.92) 50%, transparent);
+            font-size: 0.62rem; font-weight: 700; color: #f1f5f9;
+            text-transform: capitalize;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .bottom-play-btn {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -55%);
+            opacity: 0; transition: opacity 0.18s, transform 0.18s;
+            pointer-events: none;
+        }
+        .bottom-card:hover .bottom-play-btn { opacity: 1; transform: translate(-50%, -50%); }
+
+        /* Mobile: stack layout */
+        @media (max-width: 768px) {
+            #playLayout { flex-direction: column; }
+            #sidebarCol { width: 100%; flex-direction: row; flex-wrap: wrap; }
+            .sidebar-card-lg { width: calc(50% - 4px); }
+            #sidebarSmallGrid { grid-template-columns: repeat(8, 1fr); }
+        }
+
+        ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#0f172a} ::-webkit-scrollbar-thumb{background:#3b82f6;border-radius:3px}
+    </style>
+</head>
+<body class="min-h-screen bg-dark text-white font-sans overflow-x-hidden">
+    <div class="cyber-grid"></div>
+    <div class="scanlines"></div>
+
+    <!-- NAV -->
+    <nav class="glassmorphism fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                    <i class="fas fa-brain text-white text-sm"></i>
+                </div>
+                <a href="games.html" class="text-xl font-orbitron font-bold text-primary">SYNAPSE AI</a>
+            </div>
+            <div class="hidden md:flex items-center space-x-5 text-sm">
+                <a href="index.html" class="nav-underline text-gray-300 hover:text-white transition-colors">Home</a>
+                <a href="chatroom.html" class="nav-underline text-gray-300 hover:text-white transition-colors">Chat</a>
+                <a href="chat.html" class="nav-underline text-gray-300 hover:text-white transition-colors">AI Chat</a>
+                <a href="games.html" class="nav-underline active text-white transition-colors">Games</a>
+                <a href="about.html" class="nav-underline text-gray-300 hover:text-white transition-colors">About</a>
+            </div>
+            <button onclick="location.href='chat.html'" class="hidden md:block px-5 py-2 bg-primary rounded-full font-semibold font-orbitron uppercase tracking-wider hover:scale-110 transition-all text-sm">LAUNCH AI</button>
+            <button id="mobileMenuBtn" class="md:hidden text-gray-300"><i class="fas fa-bars text-xl"></i></button>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden flex-col space-y-3 px-4 pb-4">
+            <a href="index.html" class="nav-underline text-gray-300 hover:text-white py-1">Home</a>
+            <a href="chatroom.html" class="nav-underline text-gray-300 hover:text-white py-1">Chat</a>
+            <a href="chat.html" class="nav-underline text-gray-300 hover:text-white py-1">AI Chat</a>
+            <a href="games.html" class="nav-underline active text-white py-1">Games</a>
+            <a href="about.html" class="nav-underline text-gray-300 hover:text-white py-1">About</a>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="pt-16 px-3 py-2 max-w-screen-2xl mx-auto">
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+            <a href="games.html" class="hover:text-primary transition-colors"><i class="fas fa-th mr-1"></i>All Games</a>
+            <i class="fas fa-chevron-right text-gray-700" style="font-size:0.6rem"></i>
+            <span id="breadcrumbGame" class="text-gray-300 capitalize"></span>
+        </div>
+    </div>
+
+    <!-- ── MAIN PLAY LAYOUT ── -->
+    <div id="playLayout">
+        <!-- Left: iframe + info -->
+        <div id="mainCol">
+            <div id="iframeWrapper">
+                <iframe id="gameFrame" src="" allowfullscreen allow="fullscreen *; autoplay *"></iframe>
+                <button id="fsBtn" onclick="goFullscreen()" title="Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <!-- Info bar -->
+            <div id="gameInfoBar">
+                <img id="gameThumbSmall" src="" alt="">
+                <div style="min-width:0">
+                    <div id="gameTitleText"></div>
+                    <div id="gameDesc"></div>
+                </div>
+                <div class="info-actions">
+                    <button class="info-btn btn-fullscreen" onclick="goFullscreen()">
+                        <i class="fas fa-expand"></i> Fullscreen
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: sidebar games -->
+        <div id="sidebarCol">
+            <div class="sidebar-label">More Games</div>
+            <!-- Top 2 large cards -->
+            <a class="sidebar-card-lg" id="sideCard0" href="#">
+                <img id="sideImg0" src="" alt="">
+                <div class="card-name" id="sideName0"></div>
+            </a>
+            <a class="sidebar-card-lg" id="sideCard1" href="#">
+                <img id="sideImg1" src="" alt="">
+                <div class="card-name" id="sideName1"></div>
+            </a>
+            <!-- Small 4-col grid -->
+            <div id="sidebarSmallGrid"></div>
+        </div>
+    </div>
+
+    <!-- ── BOTTOM MORE GAMES ── -->
+    <div id="bottomSection">
+        <h2><i class="fas fa-gamepad text-primary mr-2"></i>More Games</h2>
+        <div id="bottomGrid"></div>
+    </div>
+
+    <div style="height:40px"></div>
+
+    <!-- ── SCRIPTS ── -->
+    <script src="games.js"></script>
+    <script>
+    (function(){
+        var $ = function(id){ return document.getElementById(id); };
+
+        // Parse URL param
+        function getParam(name) {
+            var url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        var gameName = getParam('game');
+        if (!gameName || !games[gameName]) {
+            // fallback: redirect to games list
+            window.location.href = 'games.html';
+            return;
+        }
+
+        var g = games[gameName];
+
+        // Set page title
+        document.title = gameName + ' - Synapse Unblocked Games';
+        $('breadcrumbGame').textContent = gameName;
+        $('gameTitleText').textContent = gameName;
+        $('gameDesc').textContent = g.description ? g.description.substring(0, 120) + '...' : '';
+        $('gameFrame').src = g.link;
+        $('gameThumbSmall').src = g.thumb;
+        $('gameThumbSmall').alt = gameName;
+
+        // Fullscreen handler
+        window.goFullscreen = function() {
+            var frame = $('gameFrame');
+            if (frame.requestFullscreen) frame.requestFullscreen();
+            else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+            else if (frame.mozRequestFullScreen) frame.mozRequestFullScreen();
+            else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
+        };
+
+        // Build "more games" - shuffle and exclude current
+        var allKeys = Object.keys(games).filter(function(k){ return k !== gameName; });
+        // Shuffle
+        for (var i = allKeys.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = allKeys[i]; allKeys[i] = allKeys[j]; allKeys[j] = tmp;
+        }
+
+        function makeGameUrl(name) {
+            return 'play.html?game=' + encodeURIComponent(name);
+        }
+
+        // Sidebar: 2 large + 16 small
+        var sideNames = allKeys.slice(0, 18);
+
+        // Large top 2
+        for (var si = 0; si < 2; si++) {
+            var sn = sideNames[si];
+            var sd = games[sn];
+            $('sideCard' + si).href = makeGameUrl(sn);
+            $('sideImg' + si).src = sd.thumb;
+            $('sideImg' + si).alt = sn;
+            $('sideName' + si).textContent = sn;
+        }
+
+        // Small grid: next 16
+        var smallGrid = $('sidebarSmallGrid');
+        sideNames.slice(2, 18).forEach(function(sn) {
+            var sd = games[sn];
+            var a = document.createElement('a');
+            a.className = 'sidebar-card-sm';
+            a.href = makeGameUrl(sn);
+            a.title = sn;
+            a.innerHTML = '<img src="' + sd.thumb + '" alt="' + sn.replace(/"/g,'&quot;') + '" loading="lazy">';
+            smallGrid.appendChild(a);
+        });
+
+        // Bottom grid: remaining games
+        var bottomGrid = $('bottomGrid');
+        allKeys.slice(18).forEach(function(bn) {
+            var bd = games[bn];
+            var a = document.createElement('a');
+            a.className = 'bottom-card';
+            a.href = makeGameUrl(bn);
+            a.title = bn;
+            a.innerHTML =
+                '<img src="' + bd.thumb + '" alt="' + bn.replace(/"/g,'&quot;') + '" loading="lazy">' +
+                '<div class="bottom-play-btn">' +
+                    '<div style="width:32px;height:32px;background:#3b82f6;border-radius:50%;display:flex;align-items:center;justify-content:center;">' +
+                        '<i class="fas fa-play" style="color:#fff;font-size:11px;margin-left:2px"></i>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="card-name">' + bn + '</div>';
+            bottomGrid.appendChild(a);
+        });
+
+        // Mobile menu
+        var mBtn = $('mobileMenuBtn');
+        var mMenu = $('mobileMenu');
+        if (mBtn) { mBtn.addEventListener('click', function(){ mMenu.classList.toggle('hidden'); mMenu.classList.toggle('flex'); }); }
+    })();
+    </script>
+</body>
+</html>
