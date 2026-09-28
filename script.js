@@ -157,12 +157,12 @@ if (typeof games !== 'undefined' && typeof GAMES === 'undefined') {
             ).join(' ');
         }
 
-        const baseDesc = gameData.description || `Play ${title} unblocked on Synapse AI. Immerse yourself in the world of ${title}, offering high-speed gameplay and zero lag for the ultimate school-safe gaming experience. Synapse AI provides the best unblocked versions of your favorite games with artificial intelligence assistance for the perfect gaming session.`;
+        const baseDesc = gameData.description || `Play ${title} online on Synapse AI. Immerse yourself in the world of ${title}, offering high-speed gameplay and zero lag for the ultimate gaming experience. Synapse AI provides your favorite games with artificial intelligence assistance for the perfect gaming session.`;
 
         return {
             id: index,
             name: title,
-            category: 'Unblocked',
+            category: 'Web Games',
             link: link,
             thumb: customThumb || 'https://games-f518e.web.app/' + key + '/icon.png',
             description: baseDesc
